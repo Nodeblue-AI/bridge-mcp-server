@@ -194,5 +194,5 @@ pytest tests/ -v
 ---
 
 <p align="center">
-  <i>Built by <a href="https://www.nodeblue.ai">Nodeblue</a> — part of <a href="https://github.com/nodeblue-ai/project-automate">Project Automate</a></i>
+  <i>Built by <a href="https://www.nodeblue.ai">Nodeblue</a> — Engineering-driven technology across software, industrial automation, and applied research.</i>
 </p>
