@@ -10,13 +10,17 @@
 
 ## What This Does
 
-`bridge-mcp-server` connects [ignition-mcp-server](https://github.com/nodeblue-ai/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/nodeblue-ai/studio5000-mcp-server) to answer questions like:
+`bridge-mcp-server` connects [ignition-mcp-server](https://github.com/nodeblue-ai/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/nodeblue-ai/studio5000-mcp-server) via the [Model Context Protocol](https://modelcontextprotocol.io/). It gives AI agents the ability to:
 
-- "Give me a full correlation map between the Ignition project and the PLC export so I can see what's linked."
-- "Trace this Ignition alarm back to the PLC logic so I can see what's actually triggering it."
-- "Which PLC tags exist in the L5X but have no corresponding Ignition tag?"
+- **Correlate** — build a full tag-by-tag map between an Ignition SCADA project and a Studio 5000 L5X PLC export
+- **Trace** — follow a single tag end-to-end from Ignition config → OPC item path → L5X tag → every rung of PLC logic that references it
+- **Find gaps** — identify commissioning mismatches: Ignition OPC tags with no PLC counterpart, and L5X tags with no Ignition reference
 
 It maps Ignition OPC tag paths to L5X tag names using convention-based normalization (with optional explicit mapping file override), then leverages the Studio 5000 cross-reference engine to find every line of PLC logic that references the matched tag.
+
+## Why This Exists
+
+Ignition and Studio 5000 are the two most common platforms in North American industrial automation, and they almost always exist together — yet there's no tooling that connects them. Commissioning engineers manually cross-reference tag databases in spreadsheets. This server automates that.
 
 Part of [Project Automate](https://github.com/nodeblue-ai/project-automate) by [Nodeblue](https://www.nodeblue.ai).
 
@@ -24,23 +28,31 @@ Part of [Project Automate](https://github.com/nodeblue-ai/project-automate) by [
 
 ## Installation
 
+Install from source:
+
 ```bash
-pip install bridge-mcp-server
+git clone https://github.com/nodeblue-ai/bridge-mcp-server.git
+cd bridge-mcp-server
+pip install -e .
 ```
 
-This automatically installs both `ignition-mcp-server` and `studio5000-mcp-server` as dependencies.
+This also installs `ignition-mcp-server` and `studio5000-mcp-server` as dependencies.
+
+Requires Python 3.10+.
+
+> **Note:** `pip install bridge-mcp-server` from PyPI is coming soon. For now, install from source as shown above.
 
 ---
 
 ## Quick Start
 
-### stdio (local)
+### stdio (local — kiro-cli, Claude Desktop, Claude Code)
 
 ```bash
 bridge-mcp-server
 ```
 
-### SSE (remote)
+### SSE (remote — server on one machine, agent on another)
 
 ```bash
 bridge-mcp-server --transport sse --port 8082
@@ -52,6 +64,8 @@ bridge-mcp-server --transport sse --port 8082
 
 ### kiro-cli
 
+Add to your `~/.kiro/settings.json`:
+
 ```json
 {
   "mcpServers": {
@@ -62,6 +76,31 @@ bridge-mcp-server --transport sse --port 8082
   }
 }
 ```
+
+### Claude Desktop
+
+Add to your Claude Desktop MCP config:
+
+```json
+{
+  "mcpServers": {
+    "bridge": {
+      "command": "bridge-mcp-server",
+      "args": []
+    }
+  }
+}
+```
+
+### SSE (remote)
+
+Start the server on your engineering workstation:
+
+```bash
+bridge-mcp-server --transport sse --host 0.0.0.0 --port 8082
+```
+
+Connect from any MCP client using the SSE URL: `http://<host>:8082/sse`
 
 ---
 
@@ -94,7 +133,7 @@ Returns:
   "l5xOnly": [
     {"name": "EmergencyStop", "dataType": "BOOL", "scope": "controller"}
   ],
-  "stats": {"matched": 3, "ignitionOnly": 0, "l5xOnly": 5}
+  "stats": {"matched": 3, "ignitionOnly": 0, "l5xOnly": 5, "totalIgnitionOpc": 3, "totalL5x": 8}
 }
 ```
 
@@ -140,11 +179,19 @@ Pass it via `mapping_file` parameter on any tool.
 
 ---
 
-## Example Conversation
+## Use Cases
+
+### Pre-commissioning validation
+> "Show me every Ignition OPC tag and its matching PLC tag — I need to verify the full correlation before we go live."
 
 ```
-You: What PLC logic drives the Conveyors/Line1/Running tag in Ignition?
+Agent calls: correlate_projects("/projects/MyPlant", "/plc/MainPLC.l5x")
+```
 
+### Alarm root-cause analysis
+> "The Conveyors/Line1/Running tag is triggering an alarm in Ignition. What PLC logic drives it?"
+
+```
 Agent calls: trace_tag("/projects/MyPlant", "/plc/MainPLC.l5x", "Running")
 
 Agent: The Ignition tag Conveyors/Line1/Running maps to PLC tag Motor_1.Running
@@ -158,9 +205,45 @@ Motor_1 is a Motor_UDT instance. Motor_1.Running is referenced in:
 The Motor_Control AOI sets Running from MotorFeedback (rung 4).
 ```
 
+### Commissioning gap analysis
+> "Which PLC tags exist in the L5X but aren't wired up in Ignition yet? We need to close gaps before FAT."
+
+```
+Agent calls: find_unmapped_tags("/projects/MyPlant", "/plc/MainPLC.l5x")
+```
+
 ---
 
-## Project Structure
+## Roadmap
+
+### v0.4 — Cross-Platform Correlation ✅
+- [x] `correlate_projects` — full tag-by-tag map between Ignition and L5X
+- [x] `trace_tag` — end-to-end signal chain from SCADA to PLC logic
+- [x] `find_unmapped_tags` — commissioning gap detection
+- [x] Convention-based OPC path → L5X tag name normalization
+- [x] Optional JSON mapping file for explicit overrides
+- [x] Correlation index caching per project pair
+- [x] stdio and SSE transport support
+
+### Future
+- [ ] Multi-PLC correlation (multiple L5X files against one Ignition project)
+- [ ] Alarm pipeline → PLC tag tracing (alarm source → trigger logic)
+- [ ] Mapping file auto-generation from correlation results
+- [ ] Local LLM support for air-gapped deployments
+
+---
+
+## Development
+
+```bash
+git clone https://github.com/nodeblue-ai/bridge-mcp-server.git
+cd bridge-mcp-server
+pip install -e .
+pip install pytest
+pytest tests/ -v
+```
+
+### Project Structure
 
 ```
 src/bridge_mcp_server/
@@ -175,21 +258,9 @@ tests/
 
 ---
 
-## Development
-
-```bash
-git clone https://github.com/nodeblue-ai/bridge-mcp-server.git
-cd bridge-mcp-server
-pip install -e .
-pip install pytest
-pytest tests/ -v
-```
-
----
-
 ## License
 
-[MIT](LICENSE)
+MIT — see [LICENSE](LICENSE).
 
 ---
 
