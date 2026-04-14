@@ -12,7 +12,7 @@
 
 `bridge-mcp-server` connects [ignition-mcp-server](https://github.com/nodeblue-ai/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/nodeblue-ai/studio5000-mcp-server) to answer questions like:
 
-- "This Ignition alarm fires when tag X goes true — **here's the PLC logic that drives X**"
+- "What conditions need to be met to clear this Ignition alarm?"
 - "Which PLC tags are mapped to Ignition but have no OPC reference?"
 - "Trace this SCADA tag all the way down to the ladder rung that controls it"
 
