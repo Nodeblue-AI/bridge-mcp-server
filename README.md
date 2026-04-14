@@ -12,9 +12,9 @@
 
 `bridge-mcp-server` connects [ignition-mcp-server](https://github.com/nodeblue-ai/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/nodeblue-ai/studio5000-mcp-server) to answer questions like:
 
-- "What conditions need to be met to clear this Ignition alarm?"
-- "Which PLC tags are mapped to Ignition but have no OPC reference?"
-- "Trace this SCADA tag all the way down to the ladder rung that controls it"
+- "Give me a full correlation map between the Ignition project and the PLC export so I can see what's linked."
+- "Which PLC tags exist in the L5X but have no corresponding Ignition tag?"
+- "Trace this Ignition alarm back to the PLC logic so I can see what's actually triggering it."
 
 It maps Ignition OPC tag paths to L5X tag names using convention-based normalization (with optional explicit mapping file override), then leverages the Studio 5000 cross-reference engine to find every line of PLC logic that references the matched tag.
 
