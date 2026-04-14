@@ -10,7 +10,7 @@
 
 ## What This Does
 
-`bridge-mcp-server` connects [ignition-mcp-server](https://github.com/nodeblue-ai/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/nodeblue-ai/studio5000-mcp-server) via the [Model Context Protocol](https://modelcontextprotocol.io/). It gives AI agents the ability to:
+`bridge-mcp-server` connects [ignition-mcp-server](https://github.com/Nodeblue-AI/ignition-mcp-server) and [studio5000-mcp-server](https://github.com/Nodeblue-AI/studio5000-mcp-server) via the [Model Context Protocol](https://modelcontextprotocol.io/). It gives AI agents the ability to:
 
 - **Correlate** — build a full tag-by-tag map between an Ignition SCADA project and a Studio 5000 L5X PLC export
 - **Trace** — follow a single tag end-to-end from Ignition config → OPC item path → L5X tag → every rung of PLC logic that references it
@@ -22,7 +22,7 @@ It maps Ignition OPC tag paths to L5X tag names using convention-based normaliza
 
 Ignition and Studio 5000 are the two most common platforms in North American industrial automation, and they almost always exist together — yet there's no tooling that connects them. Commissioning engineers manually cross-reference tag databases in spreadsheets. This server automates that.
 
-Part of [Project Automate](https://github.com/nodeblue-ai/project-automate) by [Nodeblue](https://www.nodeblue.ai).
+Part of [Project Automate](https://github.com/Nodeblue-AI/project-automate) by [Nodeblue](https://www.nodeblue.ai).
 
 ---
 
@@ -31,7 +31,7 @@ Part of [Project Automate](https://github.com/nodeblue-ai/project-automate) by [
 Install from source:
 
 ```bash
-git clone https://github.com/nodeblue-ai/bridge-mcp-server.git
+git clone https://github.com/Nodeblue-AI/bridge-mcp-server.git
 cd bridge-mcp-server
 pip install -e .
 ```
@@ -236,7 +236,7 @@ Agent calls: find_unmapped_tags("/projects/MyPlant", "/plc/MainPLC.l5x")
 ## Development
 
 ```bash
-git clone https://github.com/nodeblue-ai/bridge-mcp-server.git
+git clone https://github.com/Nodeblue-AI/bridge-mcp-server.git
 cd bridge-mcp-server
 pip install -e .
 pip install pytest

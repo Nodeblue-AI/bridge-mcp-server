@@ -25,10 +25,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/nodeblue-ai/bridge-mcp-server"
-Repository = "https://github.com/nodeblue-ai/bridge-mcp-server"
-Issues = "https://github.com/nodeblue-ai/bridge-mcp-server/issues"
-Changelog = "https://github.com/nodeblue-ai/bridge-mcp-server/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Nodeblue-AI/bridge-mcp-server"
+Repository = "https://github.com/Nodeblue-AI/bridge-mcp-server"
+Issues = "https://github.com/Nodeblue-AI/bridge-mcp-server/issues"
+Changelog = "https://github.com/Nodeblue-AI/bridge-mcp-server/blob/main/CHANGELOG.md"
 
 [project.scripts]
 bridge-mcp-server = "bridge_mcp_server.__main__:main"
