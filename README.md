@@ -22,7 +22,7 @@ It maps Ignition OPC tag paths to L5X tag names using convention-based normaliza
 
 Ignition and Studio 5000 are the two most common platforms in North American industrial automation, and they almost always exist together — yet there's no tooling that connects them. Commissioning engineers manually cross-reference tag databases in spreadsheets. This server automates that.
 
-Part of [Project Automate](https://github.com/Nodeblue-AI/project-automate) by [Nodeblue](https://www.nodeblue.ai).
+Part of [Project Automate](https://github.com/md-automation/project-automate) by [Nodeblue](https://www.nodeblue.ai).
 
 ---
 
