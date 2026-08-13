@@ -41,19 +41,19 @@ Built and maintained by [Nodeblue](https://www.nodeblue.ai). These connectors ar
 
 ## Installation
 
-Install from source:
+```bash
+pip install bridge-mcp-server
+```
+
+This also installs `ignition-mcp-server` and `studio5000-mcp-server` as dependencies. Requires Python 3.10+.
+
+To install from source instead:
 
 ```bash
 git clone https://github.com/Nodeblue-AI/bridge-mcp-server.git
 cd bridge-mcp-server
 pip install -e .
 ```
-
-This also installs `ignition-mcp-server` and `studio5000-mcp-server` as dependencies.
-
-Requires Python 3.10+.
-
-> **Note:** `pip install bridge-mcp-server` from PyPI is coming soon. For now, install from source as shown above.
 
 ---
 
@@ -240,7 +240,7 @@ Agent calls: find_unmapped_tags("/projects/MyPlant", "/plc/MainPLC.l5x")
 
 ### Maintenance
 - [ ] Mapping file auto-generation from correlation results (contributions welcome)
-- [ ] PyPI publication (`pip install bridge-mcp-server`)
+- [x] PyPI publication (`pip install bridge-mcp-server`)
 - [ ] Bug fixes and OPC path-convention edge cases from real projects — [issues welcome](https://github.com/Nodeblue-AI/bridge-mcp-server/issues)
 
 This connector is feature-complete for its scope: **one Ignition project against one L5X export**. Development beyond that scope happens in Nexus.
