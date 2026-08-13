@@ -238,11 +238,34 @@ Agent calls: find_unmapped_tags("/projects/MyPlant", "/plc/MainPLC.l5x")
 - [x] Correlation index caching per project pair
 - [x] stdio and SSE transport support
 
-### Future
-- [ ] Multi-PLC correlation (multiple L5X files against one Ignition project)
-- [ ] Alarm pipeline → PLC tag tracing (alarm source → trigger logic)
-- [ ] Mapping file auto-generation from correlation results
-- [ ] Local LLM support for air-gapped deployments
+### Maintenance
+- [ ] Mapping file auto-generation from correlation results (contributions welcome)
+- [ ] PyPI publication (`pip install bridge-mcp-server`)
+- [ ] Bug fixes and OPC path-convention edge cases from real projects — [issues welcome](https://github.com/Nodeblue-AI/bridge-mcp-server/issues)
+
+This connector is feature-complete for its scope: **one Ignition project against one L5X export**. Development beyond that scope happens in Nexus.
+
+---
+
+## This Connector vs. Nexus
+
+The connector is the access layer. [Nexus](https://www.nodeblue.ai/nexus) is the intelligence that sits on top of it — and of every other connector — as one system.
+
+| Capability | This connector | Nexus |
+|---|:---:|:---:|
+| Correlate one Ignition project with one L5X export | ✅ | ✅ |
+| Trace a single tag from SCADA to PLC logic | ✅ | ✅ |
+| Commissioning gap detection | ✅ | ✅ |
+| Multi-PLC / whole-plant correlation | — | ✅ |
+| Alarm pipeline → PLC trigger-logic tracing | — | ✅ |
+| Cross-vendor: Siemens, CODESYS family (500+ brands), OPC UA | — | ✅ |
+| Live fault diagnosis on the running line (root-cause, cited) | — | ✅ |
+| Knowledge layer: your manuals, SFS/DOO docs, fault history — searchable, linked to logic | — | ✅ |
+| Persistent memory of the operation across sessions | — | ✅ |
+| Fleet scale: auto-discovery, whole-plant inventory, monitoring, alarming | — | ✅ |
+| Local LLM / air-gapped deployment | — | ✅ |
+
+If you're evaluating this connector for more than one PLC, [talk to us about Nexus](https://www.nodeblue.ai/nexus).
 
 ---
 
